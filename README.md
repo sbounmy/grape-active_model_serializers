@@ -113,8 +113,12 @@ end
 
 ```ruby
 helpers do
-  def default_serializer_options
-    {only: params[:only], except: params[:except]}
+  def default_serializer_options(resource)
+    if current_user == resource
+      {only: :secret_token, except: params[:except]}
+    else
+      {only: :public_token, except: params[:except]}
+    end
   end
 end
 ```
