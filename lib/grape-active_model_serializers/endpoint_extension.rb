@@ -40,7 +40,7 @@ module Grape
       resources
     end
 
-    def default_serializer_options
+    def default_serializer_options(resource)
     end
 
     def url_options

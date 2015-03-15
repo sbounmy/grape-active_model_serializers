@@ -14,7 +14,7 @@ module Grape
 
         def fetch_serializer(resource, env)
           endpoint = env['api.endpoint']
-          options = build_options_from_endpoint(endpoint)
+          options = build_options_from_endpoint(resource, endpoint)
 
           serializer = options.fetch(:serializer, ActiveModel::Serializer.serializer_for(resource))
           return nil unless serializer
@@ -35,8 +35,8 @@ module Grape
           options
         end
 
-        def build_options_from_endpoint(endpoint)
-          [endpoint.default_serializer_options || {}, endpoint.namespace_options, endpoint.route_options, endpoint.options, endpoint.options.fetch(:route_options)].reduce(:merge)
+        def build_options_from_endpoint(resource, endpoint)
+          [endpoint.default_serializer_options(resource) || {}, endpoint.namespace_options, endpoint.route_options, endpoint.options, endpoint.options.fetch(:route_options)].reduce(:merge)
         end
 
         # array root is the innermost namespace name ('space') if there is one,
